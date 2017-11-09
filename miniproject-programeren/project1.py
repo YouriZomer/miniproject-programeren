@@ -75,31 +75,23 @@ class Window(Frame):
                         if 'RouteTekst' in vertrek:
                             routetekst = vertrek['RouteTekst']
                             tijd = ('Om ' + vertrektijd + ' vertrekt een trein naar ' + eindbestemming + '\n' + 'met tussenstation(s) ' + routetekst)
-                            tijden = tijden + '\n' + '\n' + tijd
-                        else:
-                            tijd = ('Om ' + vertrektijd + ' vertrekt een trein naar ' + eindbestemming)
+                            label2 = Label(master=root,text='vertrektijden van treinen uit station ' + str(entry.get()), foreground='blue', background='gold', font=('Calibri', 16, 'bold'))
+                            label2.place(x=30, y=30)
+                            label3 = Label(master=root, foreground='blue', font=('calibri', 9, 'bold'), text=tijden)
+                            label3.place(x=300, y=300)
                             tijden = tijden + '\n' + '\n' + tijd
                             index = index + 1
                         if index < 10:
                             print(index)
-                        else:
-                            break
                 except:
                     showinfo(title='error', message='geen geldig stationsnaam ingevoerd!')
                     tijden = ""
 
 
             def tooninfoscherm():#hier zitten code bij voor het background image
-                global informatiescherm
                 ReisInfo()
                 ReisTijden()
-                informatiescherm= Frame(master=root)
-                label2 = Label(master=root, text='vertrektijden van treinen uit station ' + str(entry.get()), foreground='blue', background='gold', font=('Calibri', 16, 'bold'))
-                label2.place(x=30, y=30)
-                terugknop2 = Button(master=informatiescherm, text='terug', background='gold', font=('calibri', 16, 'bold'))
-                terugknop2.place(x=400, y=70)
-                label3 = Label(master=informatiescherm, background='gold', foreground='blue', font=('calibri', 9, 'bold'), text=ReisTijden)
-                label3.place(x=300, y=300)
+
 
             self.master.title("Ns Reisplanner")
 
