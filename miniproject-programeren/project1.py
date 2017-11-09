@@ -61,64 +61,49 @@ class Window(Frame):
                 info = response
                 return info
 
-            def ReisTijden():#voor het geven van de reisinformatie
-                terugwaarde = ReisInfo()
-                vertrekXML = xmltodict.parse(terugwaarde)
-                tijden = ""
+            def ReisTijden():
+                response = ReisInfo()
+                vertrekXML = xmltodict.parse(response.text)
+                tijden = ''
                 index = 0
+
                 try:
-                    for vertrek in vertrekXML['actuelevertrektijden', 'Vertrekkendetrein']:
-                        eindstation = vertrek['EindStation']
+                    for vertrek in vertrekXML['ActueleVertrekTijden']['VertrekkendeTrein']:
+                        eindbestemming = vertrek['EindBestemming']
                         vertrektijd = vertrek['VertrekTijd']
                         vertrektijd = vertrektijd[11:16]
                         if 'RouteTekst' in vertrek:
-                            tekst = vertrek['RouteTekst']
-                            tijd = ('Uw trein vertrekt om ' + vertrektijd + ' richting ' + eindstation + '\n' + 'uw tussenstation(s) zijn ' + tekst)
+                            routetekst = vertrek['RouteTekst']
+                            tijd = ('Om ' + vertrektijd + ' vertrekt een trein naar ' + eindbestemming + '\n' + 'met tussenstation(s) ' + routetekst)
+                            tijden = tijden + '\n' + '\n' + tijd
                         else:
-                            tijd = ('Uw trein vertrekt om ' + vertrektijd + ' richting ' + eindstation)
-                        tijden = tijden + '\n' + '\n' + tijd
-                        index = index + 1
+                            tijd = ('Om ' + vertrektijd + ' vertrekt een trein naar ' + eindbestemming)
+                            tijden = tijden + '\n' + '\n' + tijd
+                            index = index + 1
                         if index < 10:
                             print(index)
                         else:
                             break
                 except:
                     showinfo(title='error', message='geen geldig stationsnaam ingevoerd!')
-                    tijden= ""
-                return tijden
+                    tijden = ""
 
-            def toonhoofdscherm():
-                informatiescherm.pack_forget()
-                toonhoofdscherm.pack(fill='both', expand=True)
 
             def tooninfoscherm():#hier zitten code bij voor het background image
                 global informatiescherm
-
-                actijden = ReisTijden()
-                if actijden == "":
-                    toonhoofdscherm()
-                else:
-                    informatiescherm= Frame(master=root)
-                    informatiescherm.pack()
-                    # BGI3 = Tk.Label(master=informatiescherm, image=BGI2)
-                    # BGI3.place(x=0, y=0, width=784, height=590)
-                    label2 = Label(master=informatiescherm, text='vertrektijden van treinen uit station ' + str(entry.get()), foreground='blue', background='gold', font=('Calibri', 16, 'bold'))
-                    label2.pack(pady=5)
-                    terugknop2 = Button(master=informatiescherm, text='terug', background='gold', font=('calibri', 16, 'bold'))
-                    terugknop2.pack(pady=5)
-                    label3 = Label(master=informatiescherm, background='gold', foreground='blue', font=('calibri', 9, 'bold'), text=actijden)
-                    label3.pack(pady=(0,15))
-
-                    informatiescherm.pack(fill='both', expand=True)
-                    ReisInfo()
-
+                ReisInfo()
+                ReisTijden()
+                informatiescherm= Frame(master=root)
+                label2 = Label(master=root, text='vertrektijden van treinen uit station ' + str(entry.get()), foreground='blue', background='gold', font=('Calibri', 16, 'bold'))
+                label2.place(x=30, y=30)
+                terugknop2 = Button(master=informatiescherm, text='terug', background='gold', font=('calibri', 16, 'bold'))
+                terugknop2.place(x=400, y=70)
+                label3 = Label(master=informatiescherm, background='gold', foreground='blue', font=('calibri', 9, 'bold'), text=ReisTijden)
+                label3.place(x=300, y=300)
 
             self.master.title("Ns Reisplanner")
 
             self.pack(fill=BOTH, expand=1)
-
-            entry = Entry(master=root)
-            entry.pack(pady=5)
 
             button1 = Button(master=root, text='Ik heb geen OV-chipkaart',font=('Franklin Gothic Medium', 10, 'bold'), background='blue', foreground='white', command=GeenOV)
             button1.place(x=275, y=455, width=217, height=80)
@@ -129,13 +114,12 @@ class Window(Frame):
             button3 = Button(master=root, text='Papieren kaartjes',font=('Franklin Gothic Medium', 10, 'bold'), background='blue', foreground='white', command=papier)
             button3.place(x=40, y=455, width=217, height=80)
 
-            button4 = Button(master=root, text='Ander station',font=('Franklin Gothic Medium', 20, 'bold'), background='blue', foreground='white', command=toonhoofdscherm)
-            button4.place(x=455, y=8, width=273, height=80)
+            entry = Entry(master=root)
+            entry.place(x=100, y=100)
 
+            button4 = Button(master=root, text='confirm',font=('Franklin Gothic Medium', 10, 'bold'), background='blue', foreground='white', command=tooninfoscherm)
+            button4.place(x=100, y=200)
 
-
-            mEntry = Entry()
-            mEntry.pack()
 
 
 
@@ -156,7 +140,5 @@ class Window(Frame):
             img.image = render
             img.place(x=0, y=0)
 
-
 app = Window(root)
-
 root.mainloop()
