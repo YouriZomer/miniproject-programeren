@@ -18,8 +18,8 @@ url="https://webservices.ns.nl/ns-api-stations-v2"
 auth_details=HTTPBasicAuth ("maarten.postmes@student.hu.nl", "KTl93DXFcsc5ePdp8wd_t-d1KMeF6yoiFoUxLBWos9ZbJmFk6VZu3w")
 response = requests.post(url, auth=auth_details)
 
-print(response)
 print(response.content)
+print(response)
 
 xmldict=xmltodict.parse(response.content)
 print(xmldict)
@@ -74,15 +74,17 @@ class Window(Frame):
                         vertrektijd = vertrektijd[11:16]
                         if 'RouteTekst' in vertrek:
                             routetekst = vertrek['RouteTekst']
-                            tijd = ('Om ' + vertrektijd + ' vertrekt een trein naar ' + eindbestemming + '\n' + 'met tussenstation(s) ' + routetekst)
+                            tijd = ('Om ' + vertrektijd + ' vertrekt een trein naar ' + eindbestemming + 'met tussenstation(s) ' + routetekst)
                             label2 = Label(master=root,text='vertrektijden van treinen uit station ' + str(entry.get()), foreground='blue', background='gold', font=('Calibri', 16, 'bold'))
-                            label2.place(x=30, y=30)
-                            label3 = Label(master=root, foreground='blue', font=('calibri', 9, 'bold'), text=tijden)
-                            label3.place(x=300, y=300)
+                            label2.place(x=35, y=110)
+                            label3 = Label(master=root, font=('calibri', 9, 'bold'), justify=LEFT, padx=-50, text=tijden, height=25, width=115, borderwidth=0)
+                            label3.place(x=35, y=199)
                             tijden = tijden + '\n' + '\n' + tijd
                             index = index + 1
-                        if index < 10:
+                        if index < 15:
                             print(index)
+                        else:
+                            break
                 except:
                     showinfo(title='error', message='geen geldig stationsnaam ingevoerd!')
                     tijden = ""
@@ -96,7 +98,7 @@ class Window(Frame):
             self.master.title("Ns Reisplanner")
 
             self.pack(fill=BOTH, expand=1)
-
+            invoerstring = StringVar
             button1 = Button(master=root, text='Ik heb geen OV-chipkaart',font=('Franklin Gothic Medium', 10, 'bold'), background='blue', foreground='white', command=GeenOV)
             button1.place(x=275, y=455, width=217, height=80)
 
@@ -109,9 +111,12 @@ class Window(Frame):
             entry = Entry(master=root)
             entry.place(x=100, y=100)
 
-            button4 = Button(master=root, text='confirm',font=('Franklin Gothic Medium', 10, 'bold'), background='blue', foreground='white', command=tooninfoscherm)
+            button4 = Button(master=root, textvariable = invoerstring, text='confirm',font=('Franklin Gothic Medium', 10, 'bold'), background='blue', foreground='white', command=tooninfoscherm)
             button4.place(x=100, y=200)
 
+            invoerstring = StringVar
+            label_1 = Label(root, text=invoerstring).pack()
+            # label_1.place(x=60, y=90)
 
 
 
