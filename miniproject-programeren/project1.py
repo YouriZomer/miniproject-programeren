@@ -74,11 +74,11 @@ class Window(Frame):
                         vertrektijd = vertrektijd[11:16]
                         if 'RouteTekst' in vertrek:
                             routetekst = vertrek['RouteTekst']
-                            tijd = ('Om ' + vertrektijd + ' vertrekt een trein naar ' + eindbestemming + 'met tussenstation(s) ' + routetekst)
+                            tijd = ('Om ' + vertrektijd + ' vertrekt een trein naar ' + eindbestemming + ' met tussenstation(s) ' + routetekst)
                             label2 = Label(master=root,text='vertrektijden van treinen uit station ' + str(entry.get()), foreground='blue', background='gold', font=('Calibri', 16, 'bold'))
-                            label2.place(x=35, y=110)
-                            label3 = Label(master=root, font=('calibri', 9, 'bold'), justify=LEFT, padx=-50, text=tijden, height=25, width=115, borderwidth=0)
-                            label3.place(x=35, y=199)
+                            label2.place(x=107, y=166)
+                            label3 = Label(master=root, font=('calibri', 9, 'bold'), justify=LEFT, text=tijden, height=25, width=114, borderwidth=0)
+                            label3.place(x=48, y=206)
                             tijden = tijden + '\n' + '\n' + tijd
                             index = index + 1
                         if index < 15:
@@ -99,20 +99,24 @@ class Window(Frame):
 
             self.pack(fill=BOTH, expand=1)
             invoerstring = StringVar
-            button1 = Button(master=root, text='Ik heb geen OV-chipkaart',font=('Franklin Gothic Medium', 10, 'bold'), background='blue', foreground='white', command=GeenOV)
-            button1.place(x=275, y=455, width=217, height=80)
+            button1 = Button(master=root, text='Geen OV',font=('Franklin Gothic Medium', 8, 'bold'), background='blue', foreground='white', command=GeenOV)
+            button1.place(x=426, y=33, width=150, height=60)
 
-            button2 = Button(master=root, text='Ik wil naar het buitenland',font=('Franklin Gothic Medium', 10, 'bold'), background='blue', foreground='white', command=buitenland)
-            button2.place(x=510, y=455, width=217, height=80)
+            button2 = Button(master=root, text='Reizen in buitenland',font=('Franklin Gothic Medium', 8, 'bold'), background='blue', foreground='white', command=buitenland)
+            button2.place(x=586, y=33, width=150, height=60)
 
-            button3 = Button(master=root, text='Papieren kaartjes',font=('Franklin Gothic Medium', 10, 'bold'), background='blue', foreground='white', command=papier)
-            button3.place(x=40, y=455, width=217, height=80)
+            button3 = Button(master=root, text='Papieren kaartjes',font=('Franklin Gothic Medium', 8, 'bold'), background='blue', foreground='white', command=papier)
+            button3.place(x=586, y=99, width=150, height=60)
 
+            def callback(event):
+                tooninfoscherm()
             entry = Entry(master=root)
-            entry.place(x=100, y=100)
+            entry.bind("<Return>", callback)
+            entry.place(x=176, y=126)
+            entry.focus_set()
 
-            button4 = Button(master=root, textvariable = invoerstring, text='confirm',font=('Franklin Gothic Medium', 10, 'bold'), background='blue', foreground='white', command=tooninfoscherm)
-            button4.place(x=100, y=200)
+            button4 = Button(master=root, textvariable = invoerstring, text='confirm',font=('Franklin Gothic Medium', 8, 'bold'), background='blue', foreground='white', command=tooninfoscherm)
+            button4.place(x=426, y=99, width=150, height=60)
 
             invoerstring = StringVar
             label_1 = Label(root, text=invoerstring).pack()
